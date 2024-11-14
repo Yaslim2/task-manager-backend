@@ -9,7 +9,6 @@ import { User } from './entities/users.entity';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { TasksController } from './modules/tasks/tasks.controller';
-import { UsersController } from './modules/users/users.controller';
 import { AuthController } from './modules/auth/auth.controller';
 import { TasksService } from './modules/tasks/tasks.service';
 import { UsersService } from './modules/users/users.service';
@@ -37,12 +36,7 @@ import { RedisService } from './redis/redis.service';
     UsersModule,
     AuthModule,
   ],
-  controllers: [
-    AppController,
-    TasksController,
-    UsersController,
-    AuthController,
-  ],
+  controllers: [AppController, TasksController, AuthController],
   providers: [
     AppService,
     TasksService,
