@@ -35,10 +35,16 @@ export class TasksController {
     @Request() req: RequestWithUser,
     @Query('status') status?: TaskStatus,
     @Query('title') title?: string,
-    @Query('page') page?: number,
-    @Query('limit') limit?: number,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
   ) {
-    return this.tasksService.getTasks(req.user.sub, status, title, page, limit);
+    return this.tasksService.getTasks({
+      userId: req.user.sub,
+      status,
+      title,
+      page: +page || undefined,
+      limit: +limit || undefined,
+    });
   }
 
   @Put(':id')

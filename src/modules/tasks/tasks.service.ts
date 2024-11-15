@@ -25,14 +25,20 @@ export class TasksService {
     return task;
   }
 
-  async getTasks(
-    userId: number,
-    status?: string,
-    title?: string,
-    page: number = 1,
-    pageSize: number = 10,
-  ) {
-    const cacheKey = `tasks_list:${userId}:${status ?? 'all'}:${title ?? 'all'}:${page}:${pageSize}`;
+  async getTasks({
+    limit = 10,
+    page = 1,
+    userId,
+    status,
+    title,
+  }: {
+    userId: number;
+    status?: string;
+    title?: string;
+    page: number;
+    limit: number;
+  }) {
+    const cacheKey = `tasks_list:${userId}:${status ?? 'all'}:${title ?? 'all'}:${page}:${limit}`;
     const cachedData = await this.redisCacheRepository.getData(cacheKey);
 
     if (cachedData) {
@@ -52,11 +58,11 @@ export class TasksService {
     }
 
     const [tasks, totalTasks] = await queryBuilder
-      .skip((page - 1) * pageSize)
-      .take(pageSize)
+      .skip((page - 1) * limit)
+      .take(limit)
       .getManyAndCount();
 
-    const totalPages = Math.ceil(totalTasks / pageSize);
+    const totalPages = Math.ceil(totalTasks / limit);
     const result = { tasks, totalTasks, totalPages, currentPage: page };
 
     await this.redisCacheRepository.saveData(result, cacheKey);
