@@ -35,8 +35,6 @@ export class TasksService {
     const cacheKey = `tasks_list:${userId}:${status ?? 'all'}:${title ?? 'all'}:${page}:${pageSize}`;
     const cachedData = await this.redisCacheRepository.getData(cacheKey);
 
-    console.log(cacheKey, cachedData);
-
     if (cachedData) {
       return cachedData;
     }
