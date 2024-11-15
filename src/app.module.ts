@@ -13,7 +13,8 @@ import { AuthController } from './modules/auth/auth.controller';
 import { TasksService } from './modules/tasks/tasks.service';
 import { UsersService } from './modules/users/users.service';
 import { AuthService } from './modules/auth/auth.service';
-import { RedisService } from './redis/redis.service';
+import { RedisModule } from '@liaoliaots/nestjs-redis';
+import { CacheRedisModule } from './redis/redis-cache.module';
 
 @Module({
   imports: [
@@ -32,17 +33,18 @@ import { RedisService } from './redis/redis.service';
         synchronize: true,
       }),
     }),
+    RedisModule.forRoot({
+      config: {
+        host: process.env.REDIS_HOST,
+        port: Number(process.env.REDIS_PORT),
+      },
+    }),
     TasksModule,
     UsersModule,
     AuthModule,
+    CacheRedisModule,
   ],
   controllers: [AppController, TasksController, AuthController],
-  providers: [
-    AppService,
-    TasksService,
-    UsersService,
-    AuthService,
-    RedisService,
-  ],
+  providers: [AppService, TasksService, UsersService, AuthService],
 })
 export class AppModule {}
