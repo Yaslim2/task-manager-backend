@@ -61,6 +61,7 @@ Este é o backend de uma aplicação de gestão de tarefas construída com NestJ
     DB_NAME= Nome do banco de dados.
     REDIS_HOST= Host do Redis.
     REDIS_PORT= Porta do Redis.
+    JWT_SECRET= Chave secreta utilizada para gerar o token JWT
     ```
 
 4.  **Configuração do Docker Compose**
