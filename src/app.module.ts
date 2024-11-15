@@ -14,7 +14,7 @@ import { TasksService } from './modules/tasks/tasks.service';
 import { UsersService } from './modules/users/users.service';
 import { AuthService } from './modules/auth/auth.service';
 import { RedisModule } from '@liaoliaots/nestjs-redis';
-import { CacheRedisModule } from './redis/redis-cache.module';
+import { CacheRedisModule } from './modules/redis/redis-cache.module';
 
 @Module({
   imports: [

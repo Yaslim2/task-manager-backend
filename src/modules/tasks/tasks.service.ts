@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Task } from 'src/entities/tasks.entity';
-import { RedisCacheRepository } from 'src/redis/redis-cache-repository';
+import { RedisCacheRepository } from 'src/modules/redis/redis-cache-repository';
 import { CreateTaskDto } from './dtos/create-task.dto';
 import { UpdateTaskDto } from './dtos/update-task.dto';
 @Injectable()
@@ -34,6 +34,8 @@ export class TasksService {
   ) {
     const cacheKey = `tasks_list:${userId}:${status ?? 'all'}:${title ?? 'all'}:${page}:${pageSize}`;
     const cachedData = await this.redisCacheRepository.getData(cacheKey);
+
+    console.log(cacheKey, cachedData);
 
     if (cachedData) {
       return cachedData;
@@ -96,6 +98,7 @@ export class TasksService {
     const cacheKeys = await this.redisCacheRepository.getKeys(
       `tasks_list:${userId}:*`,
     );
+
     await Promise.all(
       cacheKeys.map((key) => this.redisCacheRepository.del(key)),
     );
